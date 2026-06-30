@@ -2,279 +2,523 @@
 
 import { motion } from "framer-motion";
 
-const classes = [
+const benefits = [
   {
-    title: "Minis (4-6 Jahre) - Sternenreise",
-    icon: "🌟",
-    duration: "40 Minuten",
-    description:
-      "Spielerische Bewegungen, Atemspiele und kleine Fantasiegeschichten fur einen liebevollen Einstieg.",
+    icon: "leaf" as const,
+    title: "Mehr Selbstvertrauen",
+    text: "Kinder stärken ihr Selbstbewusstsein und glauben an sich.",
+    detail:
+      "Jedes Kind trägt bereits alles in sich, was es braucht – manchmal braucht es nur einen geschützten Raum, um daran zu glauben. Mit spielerischem Yoga wächst Schritt für Schritt Mut, Selbstvertrauen und die Freude, sich selbst zu entdecken.",
   },
   {
-    title: "Kids (7-10 Jahre) - Abenteuer Flow",
-    icon: "🦊",
-    duration: "50 Minuten",
-    description:
-      "Dynamische Sequenzen mit Fokus auf Koordination, Konzentration und mutige Korperwahrnehmung.",
+    icon: "heart" as const,
+    title: "Innere Ruhe",
+    text: "Yoga hilft Kindern, zur Ruhe zu kommen und Stress abzubauen.",
+    detail:
+      "In einer Welt voller Reize schenken wir Kindern einen Moment zum Durchatmen. Sie lernen, ihre Gefühle wahrzunehmen, zur Ruhe zu finden und neue Kraft für ihren Alltag zu sammeln.",
   },
   {
-    title: "Teens (11-14 Jahre) - Balance & Fokus",
-    icon: "🌙",
-    duration: "60 Minuten",
-    description:
-      "Moderne Yoga-Praxis fur mehr Selbstvertrauen, innere Ruhe und einen gesunden Ausgleich zum Alltag.",
+    icon: "smile" as const,
+    title: "Freude an Bewegung",
+    text: "Mit Fantasie und Spiel entdecken Kinder ihren Körper mit Freude.",
+    detail:
+      "Kinder müssen nichts leisten. Sie dürfen lachen, ausprobieren, klettern, balancieren und ihre Fantasie entfalten. So entsteht eine natürliche Freude an Bewegung, die sie ein Leben lang begleiten kann.",
+  },
+  {
+    icon: "star" as const,
+    title: "Konzentration & Fokus",
+    text: "Für mehr Konzentration in Schule, Alltag und Freizeit.",
+    detail:
+      "Kinder entdecken, wie gut es sich anfühlt, ganz bei einer Sache zu sein. Durch spielerische Achtsamkeit und Yoga lernen sie, ihre Aufmerksamkeit bewusst zu lenken und mit mehr Ruhe und Konzentration durch ihren Alltag zu gehen.",
   },
 ];
 
-const weeklySchedule = [
-  { day: "Montag", time: "15:30 - 16:10", className: "Minis (4-6) - Sternenreise" },
-  { day: "Dienstag", time: "16:30 - 17:20", className: "Kids (7-10) - Abenteuer Flow" },
-  { day: "Donnerstag", time: "17:30 - 18:30", className: "Teens (11-14) - Balance & Fokus" },
-  { day: "Samstag", time: "10:00 - 10:50", className: "Familienyoga (Eltern & Kind)" },
+const navLinks = [
+  { href: "#about", label: "Über Nava Yoga" },
+  { href: "#classes", label: "Kurse" },
+  { href: "#schedule", label: "Stundenplan" },
+  { href: "#contact", label: "Kontakt" },
 ];
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
 };
 
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-xs font-semibold tracking-[0.16em] text-[var(--sage-dark)] uppercase">
+      {children}
+    </p>
+  );
+}
+
+function BenefitLineIcon({ icon }: { icon: (typeof benefits)[number]["icon"] }) {
+  const stroke = "currentColor";
+  const props = {
+    className: "h-7 w-7 text-[var(--sage-dark)]",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke,
+    strokeWidth: 1.25,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+  };
+
+  switch (icon) {
+    case "leaf":
+      return (
+        <svg {...props}>
+          <path d="M12 22c4-4 8-9 8-14a8 8 0 10-16 0c0 5 4 10 8 14z" />
+          <path d="M12 22V10" />
+          <path d="M8 14c2-1 4-1 8 0" />
+        </svg>
+      );
+    case "heart":
+      return (
+        <svg {...props}>
+          <path d="M12 20.5s-7-4.6-7-10a4 4 0 017-2.4A4 4 0 0119 10.5c0 5.4-7 10-7 10z" />
+        </svg>
+      );
+    case "smile":
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M8.5 14.5c1.2 1.4 2.4 2 3.5 2s2.3-.6 3.5-2" />
+          <path d="M9 10h.01M15 10h.01" />
+        </svg>
+      );
+    case "star":
+      return (
+        <svg {...props}>
+          <path d="M12 3.5l2.1 4.3 4.7.7-3.4 3.3.8 4.7L12 14.8 7.8 16.5l.8-4.7-3.4-3.3 4.7-.7L12 3.5z" />
+        </svg>
+      );
+  }
+}
+
+function BenefitCard({ item, index }: { item: (typeof benefits)[number]; index: number }) {
+  return (
+    <motion.article
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ delay: index * 0.08 }}
+      className="group flex flex-col rounded-2xl border border-[var(--beige-deep)]/45 bg-[var(--cream)]/30 p-7 transition-all duration-300 ease-out hover:-translate-y-2 hover:border-[var(--beige-deep)]/80 hover:bg-[#f5efe6]/90 hover:shadow-[0_14px_40px_rgba(61,56,50,0.09)]"
+    >
+      <div className="origin-top-left transition-transform duration-300 ease-out group-hover:scale-110">
+        <BenefitLineIcon icon={item.icon} />
+      </div>
+      <h3 className="mt-6 text-base font-semibold tracking-[0.01em] text-[#2c2620]">{item.title}</h3>
+      <p className="mt-3 text-sm leading-[1.75] text-[var(--text-muted)]">{item.text}</p>
+      <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr]">
+        <div className="overflow-hidden">
+          <p className="border-t border-transparent pt-0 text-sm leading-[1.8] text-[var(--text-muted)] opacity-0 transition-[opacity,margin,padding,border-color] duration-300 ease-out group-hover:mt-4 group-hover:border-[var(--beige-deep)]/50 group-hover:pt-4 group-hover:opacity-100">
+            {item.detail}
+          </p>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function NavLogo() {
+  return (
+    <a href="#" className="flex flex-col items-start gap-1.5">
+      <svg
+        className="h-6 w-6 text-[#2c2620]"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        aria-hidden
+      >
+        <path d="M12 3c-2 4-6 6-6 10a6 6 0 0012 0c0-4-4-6-6-10z" />
+        <path d="M12 8v8M9 14h6" />
+      </svg>
+      <span className="text-[0.65rem] font-bold tracking-[0.22em] text-[#2c2620] uppercase">
+        Nava Yoga
+      </span>
+    </a>
+  );
+}
+
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-[#e9f0e5] via-[#f5efe6] to-[#eee9f8] font-[Nunito] text-slate-800">
-      <style jsx global>{`
-        html {
-          scroll-behavior: smooth;
-        }
-      `}</style>
-
-      <motion.div
-        aria-hidden
-        animate={{ y: [0, -10, 0], x: [0, 6, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute top-20 -left-16 h-52 w-52 rounded-full bg-[#d6e5cb]/70 blur-2xl"
-      />
-      <motion.div
-        aria-hidden
-        animate={{ y: [0, 8, 0], x: [0, -6, 0] }}
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute top-36 right-0 h-64 w-64 rounded-full bg-[#f6d8c7]/65 blur-2xl"
-      />
-      <motion.div
-        aria-hidden
-        animate={{ y: [0, 12, 0] }}
-        transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute bottom-40 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-[#d9d2ef]/60 blur-2xl"
-      />
-
-      <header className="sticky top-0 z-20 border-b border-[#b8c7ac]/35 bg-white/70 backdrop-blur-md">
-        <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
-          <p className="text-sm font-semibold tracking-[0.14em] text-[#6f7d61] uppercase">
-            Nava Yoga
-          </p>
-          <div className="hidden items-center gap-7 text-sm md:flex">
-            <a href="#about" className="text-slate-700 transition hover:text-[#a87961]">Uber uns</a>
-            <a href="#classes" className="text-slate-700 transition hover:text-[#a87961]">Kurse</a>
-            <a href="#schedule" className="text-slate-700 transition hover:text-[#a87961]">Stundenplan</a>
-            <a href="#contact" className="text-slate-700 transition hover:text-[#a87961]">Kontakt</a>
-          </div>
-        </nav>
-      </header>
-
+    <div className="relative min-h-screen overflow-x-hidden bg-[var(--beige)] text-[var(--foreground)]">
       <main>
-        <section className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-20 md:grid-cols-[1.1fr_1fr] md:py-30">
-          <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            animate="show"
-            transition={{ duration: 0.75, ease: "easeOut" }}
-            className="space-y-7"
-          >
-            <p className="text-sm tracking-[0.14em] text-[#8ea37e] uppercase">
-              Kinderyoga in liebevoller Atmosphare
-            </p>
-            <h1 className="text-4xl leading-tight font-semibold text-slate-900 md:text-6xl">
-              Kinderyoga mit Freude,
-              <span className="block text-[#a87961]"> Fantasie & Ruhe</span>
-            </h1>
-            <p className="max-w-xl text-base leading-8 text-slate-700 md:text-lg">
-              Spielerische Yoga-Stunden fur Kinder, die Bewegung, Achtsamkeit und
-              Selbstvertrauen starken.
-            </p>
-            <div className="flex flex-col gap-4 pt-2 sm:flex-row">
-              <a
-                href="#contact"
-                className="rounded-full bg-[#8ea37e] px-7 py-3 text-center text-sm font-semibold text-white shadow-[0_12px_28px_rgba(126,149,107,0.35)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#7e946b]"
-              >
-                Kostenlose Schnupperstunde
-              </a>
-              <a
-                href="#schedule"
-                className="rounded-full border border-[#d7c6b7] bg-white/70 px-7 py-3 text-center text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:border-[#c8a996] hover:text-[#9f6f58]"
-              >
-                Stundenplan ansehen
-              </a>
-            </div>
-          </motion.div>
+        {/* 1. Hero inkl. transparenter Navigation */}
+        <section className="relative isolate w-full" aria-label="Kinderyoga – Nava Yoga">
+          <img
+            src="/homepage-startseite-maedchen.png"
+            alt=""
+            aria-hidden
+            className="block h-auto w-full"
+          />
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-            className="relative overflow-hidden rounded-[2rem] border border-[#ddd4ed] bg-white/65 p-8 shadow-[0_20px_60px_rgba(121,105,152,0.14)] backdrop-blur-sm"
-          >
-            <div className="pointer-events-none absolute -top-14 -right-14 h-44 w-44 rounded-full bg-[#f6d8c7]/70 blur-2xl" />
-            <p className="text-xs tracking-[0.14em] text-[#8a78ab] uppercase">Sanfte Bildflache</p>
-            <h2 className="mt-3 text-2xl font-medium text-slate-900">Kinder-Yoga Studio</h2>
-            <p className="mt-2 text-sm text-slate-600">Platzhalter fur ein warmes Hero-Bild mit Kinderyoga-Szene</p>
-            <div className="mt-6 rounded-3xl border border-white/60 bg-gradient-to-br from-[#efe8fb] via-[#f9f2e8] to-[#e8f0e2] p-7">
-              <p className="text-4xl">🧘‍♀️ ✨ 🌈</p>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                Helle, freundliche Bildwelt mit ruhigen Farben und verspielten Details fur Kinder
-                und Eltern.
-              </p>
-            </div>
-            <div className="mt-8 space-y-3">
-              <div className="rounded-2xl border border-[#d4e1cc]/80 bg-white/75 p-4 transition duration-300 hover:scale-[1.01]">
-                <p className="text-sm font-medium text-slate-900">Kleine Gruppen</p>
-                <p className="text-sm text-slate-600">Maximal 10 Kinder fur achtsame Begleitung.</p>
+          <header className="fixed inset-x-0 top-0 z-40 border-0 bg-transparent shadow-none">
+            <nav className="mx-auto grid w-full max-w-[92rem] grid-cols-[1fr_auto_1fr] items-center gap-4 px-[4.5%] py-5 sm:px-[5.5%] lg:py-6">
+              <div className="justify-self-start">
+                <NavLogo />
               </div>
-              <div className="rounded-2xl border border-[#ead9cf]/80 bg-white/75 p-4 transition duration-300 hover:scale-[1.01]">
-                <p className="text-sm font-medium text-slate-900">Elternfreundlich</p>
-                <p className="text-sm text-slate-600">Transparente Kommunikation und sichere Umgebung.</p>
-              </div>
-            </div>
-          </motion.div>
-        </section>
 
-        <section id="about" className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
-          <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.65 }}
-            className="rounded-[2rem] border border-[#d6e5cb]/80 bg-white/70 p-8 shadow-[0_14px_34px_rgba(110,130,92,0.12)] backdrop-blur-sm md:p-12"
-          >
-            <p className="text-xs tracking-[0.14em] text-[#8ea37e] uppercase">Uber uns</p>
-            <h2 className="mt-3 text-3xl font-semibold text-slate-900 md:text-4xl">
-              Nava Yoga begleitet Kinder achtsam und spielerisch
-            </h2>
-            <p className="mt-5 max-w-3xl leading-8 text-slate-700">
-              Bei Nava Yoga erleben Kinder Yoga in einer ruhigen, sicheren und warmen Atmosphare.
-              Jede Stunde verbindet Bewegung, Konzentration, Selbstvertrauen, Entspannung und
-              Fantasie - kindgerecht, modern und mit viel Herz.
-            </p>
-            <div className="mt-8 grid gap-3 text-sm text-slate-700 sm:grid-cols-2 md:grid-cols-5">
-              {["Bewegung", "Konzentration", "Selbstvertrauen", "Entspannung", "Fantasie"].map(
-                (item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-[#d7c6b7]/70 bg-[#fffaf5]/80 px-4 py-3 text-center"
+              <div className="hidden items-center justify-center gap-7 text-[0.72rem] font-medium tracking-[0.14em] text-[#2c2620] uppercase md:flex lg:gap-9">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="transition hover:text-[#2c2620]/70"
                   >
-                    {item}
-                  </div>
-                ),
-              )}
-            </div>
-          </motion.div>
-        </section>
+                    {link.label}
+                  </a>
+                ))}
+              </div>
 
-        <section id="classes" className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
-          <div className="mb-8 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs tracking-[0.14em] text-[#8ea37e] uppercase">Kurse</p>
-              <h2 className="mt-3 text-3xl font-semibold text-slate-900 md:text-4xl">Passende Kurse fur jedes Alter</h2>
-            </div>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {classes.map((item, index) => (
-              <motion.article
-                key={item.title}
-                variants={fadeInUp}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 0.45, delay: index * 0.08 }}
-                whileHover={{ y: -6 }}
-                className="rounded-[2rem] border border-[#ddd4ed] bg-white/75 p-7 shadow-[0_10px_28px_rgba(115,99,150,0.11)] backdrop-blur-sm"
-              >
-                <p className="text-3xl">{item.icon}</p>
-                <h3 className="mt-3 text-2xl font-medium text-slate-900">{item.title}</h3>
-                <p className="mt-2 text-sm font-semibold text-[#8a78ab]">{item.duration}</p>
-                <p className="mt-5 leading-7 text-slate-700">{item.description}</p>
-              </motion.article>
-            ))}
-          </div>
-        </section>
-
-        <section id="schedule" className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
-          <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-            className="rounded-[2rem] border border-[#ead9cf]/80 bg-white/70 p-8 shadow-[0_14px_34px_rgba(153,121,99,0.12)] backdrop-blur-sm md:p-12"
-          >
-            <p className="text-xs tracking-[0.14em] text-[#9f6f58] uppercase">Stundenplan</p>
-            <h2 className="mt-3 text-3xl font-semibold text-slate-900 md:text-4xl">Wochenplan bei Nava Yoga</h2>
-            <div className="mt-8 divide-y divide-[#ecded4]">
-              {weeklySchedule.map((item) => (
-                <div
-                  key={item.day}
-                  className="grid gap-2 rounded-2xl py-4 text-sm transition md:grid-cols-3 md:px-3 md:text-base md:hover:bg-[#fffaf5]/70"
+              <div className="justify-self-end">
+                <a
+                  href="#contact"
+                  className="hidden rounded-full bg-[#2c2620] px-5 py-2.5 text-[0.65rem] font-semibold tracking-[0.16em] text-[var(--cream)] uppercase transition hover:bg-[#3d3832] md:inline-flex"
                 >
-                  <p className="font-medium text-slate-900">{item.day}</p>
-                  <p className="text-slate-600">{item.time}</p>
-                  <p className="text-slate-600">{item.className}</p>
-                </div>
+                  Schnupperstunde
+                </a>
+              </div>
+            </nav>
+
+            <div className="mx-auto flex max-w-[92rem] gap-4 overflow-x-auto px-[4.5%] pb-3 text-[0.65rem] font-medium tracking-[0.12em] text-[#2c2620] uppercase md:hidden sm:px-[5.5%]">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="whitespace-nowrap transition hover:text-[#2c2620]/70"
+                >
+                  {link.label}
+                </a>
               ))}
             </div>
-          </motion.div>
+          </header>
+
+          <div className="absolute inset-x-0 top-[20%] z-10 px-[4.5%] sm:top-[22%] sm:px-[5.5%] lg:top-[23%]">
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              animate="show"
+              transition={{ duration: 0.75, ease: "easeOut" }}
+              className="relative w-full max-w-[min(100%,30rem)] space-y-5 sm:max-w-[40%] sm:space-y-6 lg:max-w-[38%] lg:space-y-7"
+            >
+              <p className="text-[0.7rem] font-medium tracking-[0.28em] text-[var(--sage-dark)] uppercase sm:text-xs">
+                Kinderyoga mit Herz
+              </p>
+
+              <div className="space-y-1">
+                <h1 className="text-[2.35rem] leading-[1.08] font-semibold tracking-[-0.02em] text-[#2c2620] sm:text-5xl lg:text-[3.25rem]">
+                  Yoga für Kinder.
+                </h1>
+                <p className="text-[2.35rem] leading-[1.08] font-light tracking-[-0.02em] text-[#2c2620]/88 sm:text-5xl lg:text-[3.25rem]">
+                  Für mehr Balance
+                  <br />
+                  im Leben.
+                </p>
+              </div>
+
+              <div className="max-w-md space-y-3 border-l border-[var(--beige-deep)] pl-5">
+                <p className="text-base leading-relaxed text-[#2c2620]/78 sm:text-lg">
+                  Spielerisch. Achtsam. Mit Freude.
+                </p>
+                <p className="text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
+                  Für starke Kinder – von klein bis gross.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
+                <a
+                  href="#contact"
+                  className="inline-flex items-center justify-center rounded-full bg-[var(--sage-dark)] px-8 py-3.5 text-sm font-medium tracking-wide text-[var(--cream)] transition duration-300 hover:bg-[#5f7356]"
+                >
+                  Kostenlose Schnupperstunde
+                </a>
+                <a
+                  href="#classes"
+                  className="inline-flex items-center justify-center rounded-full border border-[#2c2620]/18 bg-transparent px-8 py-3.5 text-sm font-medium tracking-wide text-[#2c2620] transition duration-300 hover:border-[var(--sage-dark)] hover:text-[var(--sage-dark)]"
+                >
+                  Kurse entdecken
+                </a>
+              </div>
+            </motion.div>
+          </div>
         </section>
 
-        <section id="contact" className="mx-auto w-full max-w-6xl px-6 pt-16 pb-22 md:pt-24 md:pb-28">
-          <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.6 }}
-            className="grid gap-8 rounded-[2rem] border border-[#d6e5cb]/80 bg-white/70 p-8 shadow-[0_14px_34px_rgba(110,130,92,0.12)] backdrop-blur-sm md:grid-cols-[1fr_1.1fr] md:p-12"
+        {/* 2. Vorteile */}
+        <section id="benefits" className="relative overflow-visible bg-[var(--cream)] pt-16 pb-16 md:pt-20 md:pb-20 lg:pt-24 lg:pb-24">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-[36%] bottom-0 z-[1] w-screen -translate-x-1/2 md:top-[40%]"
           >
-            <div>
-              <p className="text-xs tracking-[0.14em] text-[#8ea37e] uppercase">Kontakt</p>
-              <h2 className="mt-3 text-3xl font-semibold text-slate-900 md:text-4xl">Wir freuen uns auf euch</h2>
-              <p className="mt-4 max-w-md leading-8 text-slate-700">
-                Schreib uns fur Fragen, Schnupperstunden oder eine personliche Beratung fur dein Kind.
-              </p>
+            <div
+              className="absolute inset-0 bg-cover bg-no-repeat opacity-[0.07]"
+              style={{
+                backgroundImage: "url('/homepage-startseite-maedchen.png')",
+                backgroundPosition: "center right",
+                maskImage:
+                  "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 22%, rgba(0,0,0,0.55) 48%, rgba(0,0,0,0.4) 72%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.35) 22%, rgba(0,0,0,0.55) 48%, rgba(0,0,0,0.4) 72%, transparent 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: [
+                  "linear-gradient(to bottom,",
+                  "transparent 0%,",
+                  "color-mix(in srgb, var(--beige) 14%, transparent) 10%,",
+                  "color-mix(in srgb, var(--beige) 32%, transparent) 24%,",
+                  "color-mix(in srgb, var(--beige) 52%, transparent) 38%,",
+                  "color-mix(in srgb, var(--beige) 68%, var(--cream)) 48%,",
+                  "color-mix(in srgb, var(--beige) 74%, var(--cream)) 54%,",
+                  "color-mix(in srgb, var(--beige) 66%, var(--cream)) 62%,",
+                  "color-mix(in srgb, var(--beige) 48%, transparent) 76%,",
+                  "color-mix(in srgb, var(--beige) 26%, transparent) 88%,",
+                  "color-mix(in srgb, var(--beige) 10%, transparent) 96%,",
+                  "transparent 100%)",
+                ].join(" "),
+              }}
+            />
+          </div>
+
+          <div className="relative z-[2] mx-auto w-full max-w-6xl px-5 sm:px-6">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-7">
+              {benefits.map((item, i) => (
+                <BenefitCard key={item.title} item={item} index={i} />
+              ))}
             </div>
-            <form className="grid gap-4">
-              <input
-                type="text"
-                placeholder="Dein Name"
-                className="rounded-2xl border border-[#d4e1cc] bg-white/85 px-4 py-3 text-sm outline-none transition focus:border-[#8ea37e]"
-              />
-              <input
-                type="email"
-                placeholder="E-Mail"
-                className="rounded-2xl border border-[#ead9cf] bg-white/85 px-4 py-3 text-sm outline-none transition focus:border-[#c8a996]"
-              />
-              <textarea
-                placeholder="Nachricht"
-                rows={4}
-                className="rounded-2xl border border-[#ddd4ed] bg-white/85 px-4 py-3 text-sm outline-none transition focus:border-[#8a78ab]"
-              />
-              <button
-                type="button"
-                className="mt-2 rounded-full bg-[#8ea37e] px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#7e946b]"
-              >
-                Nachricht senden
-              </button>
-            </form>
-          </motion.div>
+          </div>
+        </section>
+
+        {/* 3. Über die Yogalehrerin */}
+        <section id="about" className="relative w-full">
+          <img
+            src="/Ueber_mich_Abschnitt_3.png"
+            alt=""
+            aria-hidden
+            className="block h-auto w-full"
+          />
+
+          <div className="relative px-5 py-10 sm:px-8 md:absolute md:inset-y-0 md:right-0 md:flex md:w-[58%] md:items-center md:px-12 md:py-0 lg:px-16 xl:px-20">
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.25 }}
+              className="w-full max-w-lg"
+            >
+              <SectionLabel>Über die Yogalehrerin</SectionLabel>
+              <h2 className="mt-4 text-2xl font-bold text-[#2c2620] md:text-3xl">
+                Liebevoll. Erfahren. Achtsam.
+              </h2>
+              <p className="mt-5 text-sm leading-relaxed text-[var(--text-muted)] md:text-base">
+                Als ausgebildete Kinderyoga-Lehrerin begleite ich Kinder mit Geduld und Freude durch
+                jede Stunde. Mein Fokus liegt auf Sicherheit, altersgerechten Impulsen und einer
+                Atmosphäre, in der jedes Kind so sein darf, wie es ist.
+              </p>
+              <ul className="mt-5 space-y-2 text-sm text-[var(--text-muted)] md:text-base">
+                <li>· Zertifizierte Kinderyoga-Ausbildung</li>
+                <li>· Erfahrung mit Kindern von 4–14 Jahren</li>
+                <li>· Respektvolle, einladende Begleitung</li>
+              </ul>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* 4. Angebot */}
+        <section id="classes" className="relative -mt-3 w-full md:-mt-4">
+          <img
+            src="/angebot_abschnitt_4.png"
+            alt=""
+            aria-hidden
+            className="block h-auto w-full"
+          />
+        </section>
+
+        {/* 5. Kontakt */}
+        <section
+          id="contact"
+          className="relative bg-[var(--beige)] px-5 py-16 sm:px-6 md:py-20 lg:py-24"
+        >
+          <div className="mx-auto w-full max-w-6xl">
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.2 }}
+              className="grid gap-12 rounded-[2rem] border border-[var(--beige-deep)] bg-[var(--cream)] p-8 shadow-[0_16px_48px_rgba(61,56,50,0.06)] md:grid-cols-[1fr_1.15fr] md:p-12 lg:p-14"
+            >
+              <div>
+                <SectionLabel>Kontakt</SectionLabel>
+                <h2 className="mt-4 text-3xl font-bold md:text-4xl">
+                  Schnupperstunde oder Fragen?
+                </h2>
+                <p className="mt-5 leading-relaxed text-[var(--text-muted)]">
+                  Schreiben Sie uns – wir melden uns zeitnah mit Terminvorschlägen und allen Infos
+                  zu Kurs, Alter und Ablauf.
+                </p>
+                <ul className="mt-8 space-y-3 text-sm text-[var(--text-muted)]">
+                  <li>✓ Kostenlose Probestunde</li>
+                  <li>✓ Persönliche Beratung zum passenden Kurs</li>
+                  <li>✓ Antwort in der Regel innerhalb von 24 Stunden</li>
+                </ul>
+              </div>
+              <form className="grid gap-4" onSubmit={(e) => e.preventDefault()}>
+                <label className="sr-only" htmlFor="name">
+                  Dein Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Dein Name"
+                  className="rounded-2xl border border-[var(--beige-deep)] bg-[var(--beige)]/30 px-5 py-3.5 text-sm outline-none transition placeholder:text-[var(--text-muted)]/70 focus:border-[var(--sage)] focus:bg-[var(--cream)]"
+                />
+                <label className="sr-only" htmlFor="email">
+                  E-Mail
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="E-Mail"
+                  className="rounded-2xl border border-[var(--beige-deep)] bg-[var(--beige)]/30 px-5 py-3.5 text-sm outline-none transition placeholder:text-[var(--text-muted)]/70 focus:border-[var(--sage)] focus:bg-[var(--cream)]"
+                />
+                <label className="sr-only" htmlFor="message">
+                  Nachricht
+                </label>
+                <textarea
+                  id="message"
+                  placeholder="Nachricht (z. B. Alter Ihres Kindes, gewünschter Kurs)"
+                  rows={5}
+                  className="rounded-2xl border border-[var(--beige-deep)] bg-[var(--beige)]/30 px-5 py-3.5 text-sm outline-none transition placeholder:text-[var(--text-muted)]/70 focus:border-[var(--sage)] focus:bg-[var(--cream)]"
+                />
+                <button
+                  type="submit"
+                  className="mt-2 rounded-full bg-[var(--sage-dark)] px-8 py-3.5 text-sm font-semibold text-[var(--cream)] shadow-[0_10px_28px_rgba(111,130,100,0.28)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#5f7356]"
+                >
+                  Nachricht senden
+                </button>
+              </form>
+            </motion.div>
+          </div>
         </section>
       </main>
+
+      <footer className="relative w-full border-t border-[#E5D8C8]">
+        <div className="bg-[#F5EFE6] py-10 md:py-12 lg:py-14">
+          <div className="mx-auto grid w-full max-w-6xl gap-8 px-5 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            <div className="[&_svg]:text-[#4A3426] [&_span]:text-[#3E2E24]">
+              <NavLogo />
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold tracking-[0.18em] text-[#3E2E24] uppercase">
+                Links
+              </h3>
+              <ul className="mt-2.5 space-y-2 text-sm text-[#6B5B4D]">
+                <li>
+                  <a href="#" className="transition hover:text-[#3E2E24]">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#classes" className="transition hover:text-[#3E2E24]">
+                    Angebot
+                  </a>
+                </li>
+                <li>
+                  <a href="#about" className="transition hover:text-[#3E2E24]">
+                    Über mich
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact" className="transition hover:text-[#3E2E24]">
+                    Kontakt
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold tracking-[0.18em] text-[#3E2E24] uppercase">
+                Kontakt
+              </h3>
+              <ul className="mt-2.5 space-y-2 text-sm text-[#6B5B4D]">
+                <li>
+                  <a href="mailto:hallo@navayoga.ch" className="transition hover:text-[#3E2E24]">
+                    hallo@navayoga.ch
+                  </a>
+                </li>
+                <li>
+                  <a href="tel:+41791234567" className="transition hover:text-[#3E2E24]">
+                    +41 79 123 45 67
+                  </a>
+                </li>
+                <li>Winterthur &amp; Umgebung</li>
+                <li className="flex gap-4">
+                  <a href="#" className="text-[#4A3426] transition hover:text-[#3E2E24]">
+                    Instagram
+                  </a>
+                  <a href="#" className="text-[#4A3426] transition hover:text-[#3E2E24]">
+                    WhatsApp
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold tracking-[0.18em] text-[#3E2E24] uppercase">
+                Newsletter
+              </h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-[#6B5B4D]">
+                Bleibe auf dem Laufenden über neue Kurse, Workshops und Angebote.
+              </p>
+              <form
+                className="mt-3 flex overflow-hidden rounded-xl border border-[#E5D8C8] bg-[#FFFDF9]"
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <label className="sr-only" htmlFor="newsletter-email">
+                  E-Mail-Adresse
+                </label>
+                <input
+                  id="newsletter-email"
+                  type="email"
+                  placeholder="E-Mail eingeben"
+                  className="min-w-0 flex-1 bg-[#FFFDF9] px-4 py-2.5 text-sm text-[#3E2E24] outline-none placeholder:text-[#6B5B4D]/70"
+                />
+                <button
+                  type="submit"
+                  className="flex shrink-0 items-center justify-center bg-[#4A3426] px-4 text-[#FFFFFF] transition hover:bg-[#3E2E24]"
+                  aria-label="Newsletter abonnieren"
+                >
+                  →
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-[#4A3426] py-3">
+          <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-2 px-5 text-xs tracking-[0.12em] text-[#FFFFFF]/90 sm:flex-row sm:px-6">
+            <p>© 2026 Nava Yoga</p>
+            <p className="uppercase">
+              <a href="#" className="transition hover:text-[#FFFFFF]">
+                Impressum
+              </a>
+              <span className="mx-2">|</span>
+              <a href="#" className="transition hover:text-[#FFFFFF]">
+                Datenschutz
+              </a>
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
